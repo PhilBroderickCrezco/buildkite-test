@@ -1,0 +1,3 @@
+steps:
+  - label: ":hammer: Build project"
+    command: echo "Hello World!"
