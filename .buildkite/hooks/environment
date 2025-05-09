@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -euo pipefail
+
+eval "$(ssh-agent -s)"
+chmod 600 /buildkite-secrets/id_rsa_buildkite_git
+ssh-add -k /buildkite-secrets/id_rsa_buildkite_git
+
+# You can export other secrets here too
+# export FOO=bar
