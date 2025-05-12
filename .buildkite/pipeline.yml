@@ -1,6 +1,6 @@
 steps:
   - label: ":dotnet: Restore dependencies"
-    command: "ls -a"
+    command: "dotnet restore MicroserviceA\MicroserviceA.csproj --packages .nuget/packages"
     key: "deps"
     plugins:
       - docker:
