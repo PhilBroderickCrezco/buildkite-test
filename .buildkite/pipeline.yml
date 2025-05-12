@@ -4,6 +4,7 @@ steps:
     plugins:
       - docker:
           image: mcr.microsoft.com/dotnet/sdk:9.0
+          
   - label: ":dotnet: Restore dependencies"
     command: "dotnet restore MicroserviceA\MicroserviceA.csproj --packages .nuget/packages"
     key: "deps"
