@@ -1,4 +1,6 @@
 steps:
+  - label: ls dir
+    command: ls -a
   - label: ":dotnet: Restore dependencies"
     command: "dotnet restore MicroserviceA/MicroserviceA.csproj --packages .nuget/packages"
     key: "deps"
@@ -12,7 +14,7 @@ steps:
           upload: obj/*
 
   - label: ":dotnet: Build"
-    command: "dotnet build --configuration Release --no-restore MicroserviceA/MicroserviceA.csproj"
+    command: "dotnet build --configuration Release --no-restore --property:EnforceCodeStyleInBuild=true"
     depends_on: "deps"
     plugins:
       - artifacts:
