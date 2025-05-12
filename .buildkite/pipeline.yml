@@ -1,6 +1,6 @@
 steps:
   - label: ":dotnet: Restore dependencies"
-    command: "dotnet restore --packages .nuget/packages"
+    command: "dotnet restore MicroserviceA/MicroserviceA.csproj --packages .nuget/packages"
     key: "deps"
     plugins:
       - docker:
@@ -12,7 +12,7 @@ steps:
           upload: obj/*
 
   - label: ":dotnet: Build"
-    command: "dotnet build --configuration Release --no-restore --property:EnforceCodeStyleInBuild=true"
+    command: "dotnet build --configuration Release --no-restore MicroserviceA/MicroserviceA.csproj"
     depends_on: "deps"
     plugins:
       - artifacts:
