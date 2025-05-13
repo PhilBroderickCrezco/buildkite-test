@@ -1,14 +1,7 @@
 steps:
-  - label: ":dotnet: Restore tools"
-    key: "tool_restore"
-    command: "dotnet tool restore"
-    plugins:
-      - docker:
-          image: mcr.microsoft.com/dotnet/sdk:9.0
   - label: ":dotnet: Get affected projects"
-    depends_on: "tool_restore"
     key: "affected"
-    command: "dotnet affected"
+    command: "dotnet tool restore && dotnet affected"
     plugins:
       - docker:
           image: mcr.microsoft.com/dotnet/sdk:9.0
