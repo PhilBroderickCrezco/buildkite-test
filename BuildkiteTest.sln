@@ -1,6 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroserviceA", "MicroserviceA\MicroserviceA.csproj", "{459BA600-2C98-41ED-B66D-CC733DCA8236}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroserviceA.Api", "MicroserviceA\MicroserviceA.Api\MicroserviceA.Api.csproj", "{459BA600-2C98-41ED-B66D-CC733DCA8236}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroserviceB.Api", "MicroserviceB\MicroserviceB.Api\MicroserviceB.Api.csproj", "{24081B2E-EB35-40C3-8DA1-FCA0BAD779B7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MicroserviceA", "MicroserviceA", "{36647855-3AA5-42EE-B794-9B4B4EAF9196}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MicroserviceB", "MicroserviceB", "{59D25FB2-C5F2-4B9F-AC33-984C6BAAAA27}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +18,13 @@ Global
 		{459BA600-2C98-41ED-B66D-CC733DCA8236}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{459BA600-2C98-41ED-B66D-CC733DCA8236}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{459BA600-2C98-41ED-B66D-CC733DCA8236}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24081B2E-EB35-40C3-8DA1-FCA0BAD779B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24081B2E-EB35-40C3-8DA1-FCA0BAD779B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24081B2E-EB35-40C3-8DA1-FCA0BAD779B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24081B2E-EB35-40C3-8DA1-FCA0BAD779B7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{459BA600-2C98-41ED-B66D-CC733DCA8236} = {36647855-3AA5-42EE-B794-9B4B4EAF9196}
+		{24081B2E-EB35-40C3-8DA1-FCA0BAD779B7} = {59D25FB2-C5F2-4B9F-AC33-984C6BAAAA27}
 	EndGlobalSection
 EndGlobal
