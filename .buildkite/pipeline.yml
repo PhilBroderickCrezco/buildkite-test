@@ -1,7 +1,21 @@
 steps:
+  - label: ":dotnet: Restore tools"
+    key: "tool_restore"
+    command: "dotnet tool restore"
+    plugins:
+      - docker:
+          image: mcr.microsoft.com/dotnet/sdk:9.0
+  - label: ":dotnet: Get affected projects"
+    depends_on: "tool_restore"
+    key: "affected"
+    command: "dotnet affected"
+    plugins:
+      - docker:
+          image: mcr.microsoft.com/dotnet/sdk:9.0
   - label: ":dotnet: Restore dependencies"
     command: "dotnet restore MicroserviceA/MicroserviceA.csproj --packages .nuget/packages"
     key: "deps"
+    depends_on: "affected"
     plugins:
       - docker:
           image: mcr.microsoft.com/dotnet/sdk:9.0
