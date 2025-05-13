@@ -9,7 +9,7 @@ steps:
           upload: .nuget/packages
           compressed: .nuget/packages.tgz
       - artifacts:
-          upload: obj/*
+          upload: MicroserviceA/obj/*
 
   - label: ":dotnet: Build"
     command: "dotnet build --configuration Release --no-restore --property:EnforceCodeStyleInBuild=true"
@@ -19,6 +19,6 @@ steps:
           download: .nuget/packages
           compressed: .nuget/packages.tgz
       - artifacts:
-          download: obj/*
+          download: MicroserviceA/obj/*
       - docker:
           image: mcr.microsoft.com/dotnet/sdk:9.0
