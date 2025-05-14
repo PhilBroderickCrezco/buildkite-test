@@ -21,6 +21,7 @@ steps:
     plugins:
       - docker:
           image: mcr.microsoft.com/dotnet/sdk:8.0
+          chown: true
           mount-buildkite-agent: true
       - artifacts:
           upload:
