@@ -2,6 +2,9 @@ steps:
   - label: ":dotnet: Get affected projects"
     key: "affected"
     command: |
+      # Install jq for JSON parsing
+      apt-get update && apt-get install -y jq
+    
       dotnet tool restore
       # Store affected projects in a file to be used by later steps
       dotnet affected --format=json --output-name affected-projects --from $BUILDKITE_COMMIT --to master
