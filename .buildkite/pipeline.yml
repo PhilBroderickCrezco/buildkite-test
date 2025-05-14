@@ -4,7 +4,7 @@ steps:
     command: |
       dotnet tool restore
       # Store affected projects in a file to be used by later steps
-      dotnet affected --format=json --output-name affected-projects.json --from $BUILDKITE_BRANCH --to master
+      dotnet affected --format=json --output-name affected-projects.json --from "origin/${BUILDKITE_BRANCH}" --to origin/master
       
       # Check if any projects are affected
       if [ "$(cat affected-projects.json | jq 'length')" -gt 0 ]; then
