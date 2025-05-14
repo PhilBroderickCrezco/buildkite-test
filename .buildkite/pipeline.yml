@@ -2,21 +2,9 @@ steps:
   - label: ":dotnet: Get affected projects"
     key: "affected"
     command: |
-      # Ensure we have all git branches and history
-      git fetch origin
-      
-      # Get the current branch name
-      CURRENT_BRANCH="${BUILDKITE_BRANCH:-$(git rev-parse --abbrev-ref HEAD)}"
-      echo "Current branch: $CURRENT_BRANCH"
-      
-      # Set the comparison targets
-      FROM_BRANCH="$CURRENT_BRANCH"
-      TO_BRANCH="origin/master"
-      echo "Comparing changes from $FROM_BRANCH to $TO_BRANCH"
-      
       dotnet tool restore
       # Store affected projects in a file to be used by later steps
-      dotnet affected --format=json --output-name affected-projects.json --from $FROM_BRANCH --to $TO_BRANCH
+      dotnet affected --format=json --output-name affected-projects.json
       
       # Check if any projects are affected
       if [ "$(cat affected-projects.json | jq 'length')" -gt 0 ]; then
