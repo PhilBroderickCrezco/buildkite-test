@@ -21,9 +21,8 @@ steps:
     plugins:
       - docker:
           image: mcr.microsoft.com/dotnet/sdk:8.0
-          mounts:
-            - /var/run/docker.sock:/var/run/docker.sock
           mount-buildkite-agent: true
+          propagate-uid-gid: true
       - artifacts:
           upload:
             - affected-projects.json
