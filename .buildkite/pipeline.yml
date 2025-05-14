@@ -4,11 +4,8 @@ steps:
     command: |
       # Install jq for JSON parsing
       apt-get update && apt-get install -y jq
-      
-      ls -la $(which buildkite-agent)
     
-      # Try to fix permissions if needed
-      chmod +x $(which buildkite-agent) || echo "Could not change permissions, continuing anyway"
+      chmod +x /usr/bin/buildkite-agent
     
       dotnet tool restore
       # Store affected projects in a file to be used by later steps
