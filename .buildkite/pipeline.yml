@@ -22,7 +22,6 @@ steps:
       - docker:
           image: mcr.microsoft.com/dotnet/sdk:8.0
           mount-buildkite-agent: true
-          propagate-uid-gid: true
           user: root
       - artifacts:
           upload:
