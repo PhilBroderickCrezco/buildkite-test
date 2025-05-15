@@ -5,9 +5,6 @@ steps:
       # Install jq for JSON parsing
       apt-get update && apt-get install -y jq
     
-      echo "Setting permissions for buildkite-agent"
-      chmod +x ../usr/bin/buildkite-agent
-    
       dotnet tool restore
       # Store affected projects in a file to be used by later steps
       dotnet affected --format=json --output-name affected-projects --from $BUILDKITE_COMMIT --to master
@@ -16,10 +13,12 @@ steps:
       if [ "$(cat affected-projects.json | jq 'length')" -gt 0 ]; then
         echo "Affected projects found"
         cat affected-projects.json | jq -r '.[]' > affected-list.txt
-        buildkite-agent meta-data set "has-affected-projects" "true"
+        echo "true" > has-affected-projects.txt
       else
         echo "No affected projects found"
-        buildkite-agent meta-data set "has-affected-projects" "false"
+        echo "[]" > affected-projects.json
+        touch affected-list.txt
+        echo "false" > has-affected-projects.txt
       fi
     plugins:
       - docker:
@@ -30,33 +29,39 @@ steps:
           upload:
             - affected-projects.json
             - affected-list.txt
+            - has-affected-projects.txt
 
   - label: ":dotnet: Restore dependencies"
     key: "restore"
     depends_on: "affected"
     command: |
-      # Check if we have any affected projects
-      if [[ "$(buildkite-agent meta-data get "has-affected-projects")" == "true" ]]; then
-        echo "Restoring affected projects"
-      
-        # Read the affected projects and restore each one
-        while read -r project; do
-          echo "Restoring $project"
-          dotnet restore "$project" --packages .nuget/packages
-        done < affected-list.txt
-      
-        # Create a list of restored projects for reference
-        echo "Projects restored:" > restored-projects.txt
-        cat affected-list.txt >> restored-projects.txt
-      else
-        echo "No projects to restore"
-        echo "No projects restored" > restored-projects.txt
-      fi
+        # Install necessary tools
+        apt-get update && apt-get install -y jq
+    
+        # Check if we have any affected projects
+        if [ "$(cat has-affected-projects.txt)" = "true" ]; then
+          echo "Restoring affected projects"
+        
+          # Read the affected projects and restore each one
+          while read -r project; do
+            echo "Restoring $project"
+            dotnet restore "$project" --packages .nuget/packages
+          done < affected-list.txt
+        
+          # Create a list of restored projects for reference
+          echo "Projects restored:" > restored-projects.txt
+          cat affected-list.txt >> restored-projects.txt
+        else
+          echo "No projects to restore"
+          echo "No projects restored" > restored-projects.txt
+        fi
     plugins:
       - docker:
           image: mcr.microsoft.com/dotnet/sdk:9.0
       - artifacts:
-          download: affected-list.txt
+          download: 
+          - affected-list.txt
+          - has-affected-projects.txt
       - artifacts:
           upload:
             - .nuget/packages
