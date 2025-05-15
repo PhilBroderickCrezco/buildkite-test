@@ -5,6 +5,7 @@ steps:
       # Install jq for JSON parsing
       apt-get update && apt-get install -y jq
     
+      echo "Setting permissions for buildkite-agent"
       chmod +x /usr/bin/buildkite-agent
     
       dotnet tool restore
