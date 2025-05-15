@@ -28,12 +28,16 @@ EOF
         - artifacts:
             compressed: ".nuget/${NAME}/packages.tgz"
             upload: ".nuget/${NAME}/packages"
+        - artifacts:
+            upload: "${FILEPATH}/../obj/*"
     
     - label: ":dotnet: Build $NAME"
       depends_on: "restore-$SANITIZED_NAME"
       command: |
         dotnet build --configuration Release --no-restore  "$FILEPATH"
       plugins:
+        - artifacts:
+            download: "${FILEPATH}/../obj/*"
         - artifacts:
             download: ".nuget/${NAME}/packages"
             compressed: ".nuget/${NAME}/packages.tgz"
