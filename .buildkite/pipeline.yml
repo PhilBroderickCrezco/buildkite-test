@@ -1,31 +1,42 @@
 steps:
   - label: ":dotnet: Get affected projects"
     key: "affected"
-    command: "dotnet tool restore && dotnet affected"
+    command: |
+      # Install jq for JSON parsing
+      apt-get update && apt-get install -y jq
+    
+      dotnet tool restore
+      # Store affected projects in a file to be used by later steps
+      dotnet affected --format=json --output-name affected-projects --from $BUILDKITE_COMMIT --to master
+      
+      # Check if any projects are affected
+      if [ "$(cat affected-projects.json | jq 'length')" -gt 0 ]; then
+        echo "Affected projects found"
+        cat affected-projects.json | jq -r '.[]' > affected-list.txt
+        echo "true" > has-affected-projects.txt
+      else
+        echo "No affected projects found"
+        echo "[]" > affected-projects.json
+        touch affected-list.txt
+        echo "false" > has-affected-projects.txt
+      fi
     plugins:
       - docker:
           image: mcr.microsoft.com/dotnet/sdk:8.0
-  - label: ":dotnet: Restore dependencies"
-    command: "dotnet restore MicroserviceA/MicroserviceA.csproj --packages .nuget/packages"
-    key: "deps"
-    depends_on: "affected"
-    plugins:
-      - docker:
-          image: mcr.microsoft.com/dotnet/sdk:9.0
+          mount-buildkite-agent: true
+          user: root
       - artifacts:
-          upload: .nuget/packages
-          compressed: .nuget/packages.tgz
-      - artifacts:
-          upload: MicroserviceA/obj/*
+          upload:
+            - affected-projects.json
+            - affected-list.txt
+            - has-affected-projects.txt
 
-  - label: ":dotnet: Build"
-    command: "dotnet build --configuration Release --no-restore --property:EnforceCodeStyleInBuild=true"
-    depends_on: "deps"
+  - label: ":pipeline: Generate restore/build pipeline"
+    key: "pipeline-gen"
+    depends_on: "affected"
+    command: ".buildkite/scripts/restore.sh"
     plugins:
       - artifacts:
-          download: .nuget/packages
-          compressed: .nuget/packages.tgz
-      - artifacts:
-          download: MicroserviceA/obj/*
-      - docker:
-          image: mcr.microsoft.com/dotnet/sdk:9.0
+          download:
+            - affected-projects.json
+            - has-affected-projects.txt
