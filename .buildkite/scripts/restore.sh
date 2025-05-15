@@ -14,18 +14,19 @@ EOF
 
   jq -c '.[]' affected-projects.json | while read -r project; do
     NAME=$(echo "$project" | jq -r '.Name')
+    SANITIZED_NAME="${NAME//./-}"
     FILEPATH=$(echo "$project" | jq -r '.FilePath')
     
     cat <<EOF >> dynamic-steps.yml
     - label: ":package: Restore $NAME"
-      key: "restore-$NAME"
+      key: "restore-$SANITIZED_NAME"
       command: |
         dotnet restore "$FILEPATH" --packages ".nuget/${NAME}/packages"
       plugins:
         - docker:
             image: mcr.microsoft.com/dotnet/sdk:9.0
     - label: ":package: Build $NAME"
-      depends_on: "restore-$NAME"
+      depends_on: "restore-$SANITIZED_NAME"
       command: |
         dotnet build --configuration Release --no-restore  "$FILEPATH"
       plugins:
