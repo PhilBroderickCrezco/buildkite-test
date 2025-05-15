@@ -23,6 +23,7 @@ EOF
       key: "restore-$SANITIZED_NAME"
       command: |
         dotnet restore "$FILEPATH" --packages ".nuget/${NAME}/packages"
+        ls -a $PROJECT_DIR
       plugins:
         - docker:
             image: mcr.microsoft.com/dotnet/sdk:9.0
