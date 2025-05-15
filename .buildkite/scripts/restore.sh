@@ -16,6 +16,7 @@ EOF
     NAME=$(echo "$project" | jq -r '.Name')
     SANITIZED_NAME="${NAME//./-}"
     FILEPATH=$(echo "$project" | jq -r '.FilePath')
+    PROJECT_DIR=$(dirname "$FILEPATH")
     
     cat <<EOF >> dynamic-steps.yml
     - label: ":dotnet: Restore $NAME"
@@ -29,15 +30,15 @@ EOF
             compressed: ".nuget/${NAME}/packages.tgz"
             upload: ".nuget/${NAME}/packages"
         - artifacts:
-            upload: "${FILEPATH}/../obj/*"
+            upload: "${PROJECT_DIR}/obj/*"
     
     - label: ":dotnet: Build $NAME"
       depends_on: "restore-$SANITIZED_NAME"
       command: |
-        dotnet build --configuration Release --no-restore  "$FILEPATH"
+        dotnet build --configuration Release --no-restore "$FILEPATH"
       plugins:
         - artifacts:
-            download: "${FILEPATH}/../obj/*"
+            download: "${PROJECT_DIR}/obj/*"
         - artifacts:
             download: ".nuget/${NAME}/packages"
             compressed: ".nuget/${NAME}/packages.tgz"
