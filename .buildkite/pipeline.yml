@@ -31,53 +31,12 @@ steps:
             - affected-list.txt
             - has-affected-projects.txt
 
-  - label: ":dotnet: Restore dependencies"
-    key: "restore"
+  - label: ":pipeline: Generate restore/build pipeline"
+    key: "pipeline-gen"
     depends_on: "affected"
-    command: |
-        # Install necessary tools
-        apt-get update && apt-get install -y jq
-    
-        # Check if we have any affected projects
-        if [ "$(cat has-affected-projects.txt)" = "true" ]; then
-          echo "Restoring affected projects"
-        
-          # Read the affected projects and restore each one
-          while read -r project; do
-            echo "Restoring $project"
-            dotnet restore "$project" --packages .nuget/packages
-          done < affected-list.txt
-        
-          # Create a list of restored projects for reference
-          echo "Projects restored:" > restored-projects.txt
-          cat affected-list.txt >> restored-projects.txt
-        else
-          echo "No projects to restore"
-          echo "No projects restored" > restored-projects.txt
-        fi
-    plugins:
-      - docker:
-          image: mcr.microsoft.com/dotnet/sdk:9.0
-      - artifacts:
-          download: 
-          - affected-list.txt
-          - has-affected-projects.txt
-      - artifacts:
-          upload:
-            - .nuget/packages
-            - restored-projects.txt
-      - artifacts:
-          compressed: .nuget/packages.tgz
-          upload: .nuget/packages
-
-  - label: ":dotnet: Build"
-    command: "dotnet build --configuration Release --no-restore --property:EnforceCodeStyleInBuild=true"
-    depends_on: "restore"
+    command: ".buildkite/scripts/restore.sh"
     plugins:
       - artifacts:
-          download: .nuget/packages
-          compressed: .nuget/packages.tgz
-      - artifacts:
-          download: restored-projects.txt
-      - docker:
-          image: mcr.microsoft.com/dotnet/sdk:9.0
+          download:
+            - affected-projects.json
+            - has-affected-projects.txt
