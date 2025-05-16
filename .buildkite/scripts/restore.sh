@@ -21,7 +21,7 @@ EOF
     cat <<EOF >> dynamic-steps.yml
     - label: ":dotnet: Build $NAME"
       command: |
-        dotnet build --configuration Release"$FILEPATH"
+        dotnet build --configuration Release "$FILEPATH"
       plugins:
         - docker:
             image: mcr.microsoft.com/dotnet/sdk:9.0
