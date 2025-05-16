@@ -19,29 +19,10 @@ EOF
     PROJECT_DIR=$(dirname "$FILEPATH")
     
     cat <<EOF >> dynamic-steps.yml
-    - label: ":dotnet: Restore $NAME"
-      key: "restore-$SANITIZED_NAME"
-      command: |
-        dotnet restore "$FILEPATH" --packages ".nuget/packages"
-      plugins:
-        - docker:
-            image: mcr.microsoft.com/dotnet/sdk:9.0
-        - artifacts:
-            compressed: ".nuget/packages.tgz"
-            upload: ".nuget/packages"
-        - artifacts:
-            upload: "**/obj/*"
-    
     - label: ":dotnet: Build $NAME"
-      depends_on: "restore-$SANITIZED_NAME"
       command: |
-        dotnet build --configuration Release --no-restore "$FILEPATH"
+        dotnet build --configuration Release"$FILEPATH"
       plugins:
-        - artifacts:
-            download: "**/obj/*"
-        - artifacts:
-            download: ".nuget/packages"
-            compressed: ".nuget/packages.tgz"
         - docker:
             image: mcr.microsoft.com/dotnet/sdk:9.0
         
