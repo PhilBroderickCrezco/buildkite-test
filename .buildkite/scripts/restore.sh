@@ -22,14 +22,13 @@ EOF
     - label: ":dotnet: Restore $NAME"
       key: "restore-$SANITIZED_NAME"
       command: |
-        dotnet restore "$FILEPATH" --packages ".nuget/${NAME}/packages"
-        ls -a $PROJECT_DIR
+        dotnet restore "$FILEPATH" --packages ".nuget/packages"
       plugins:
         - docker:
             image: mcr.microsoft.com/dotnet/sdk:9.0
         - artifacts:
-            compressed: ".nuget/**/packages.tgz"
-            upload: ".nuget/**/packages"
+            compressed: ".nuget/packages.tgz"
+            upload: ".nuget/packages"
         - artifacts:
             upload: "**/obj/*"
     
@@ -41,8 +40,8 @@ EOF
         - artifacts:
             download: "**/obj/*"
         - artifacts:
-            download: ".nuget/**/packages"
-            compressed: ".nuget/**/packages.tgz"
+            download: ".nuget/packages"
+            compressed: ".nuget/packages.tgz"
         - docker:
             image: mcr.microsoft.com/dotnet/sdk:9.0
         
@@ -51,7 +50,7 @@ EOF
   cat dynamic-steps.yml
   
   #Upload the dynamic steps to Buildkite
-  buildkite-agent pipeline upload dynamic-steps.yml
+  #buildkite-agent pipeline upload dynamic-steps.yml
 else
   echo "No projects to restore."
 fi
