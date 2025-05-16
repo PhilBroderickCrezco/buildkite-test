@@ -50,7 +50,7 @@ EOF
   cat dynamic-steps.yml
   
   #Upload the dynamic steps to Buildkite
-  #buildkite-agent pipeline upload dynamic-steps.yml
+  buildkite-agent pipeline upload dynamic-steps.yml
 else
   echo "No projects to restore."
 fi
