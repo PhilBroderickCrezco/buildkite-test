@@ -10,6 +10,16 @@ if [ "$(cat has-affected-projects.txt)" = "true" ]; then
   # Generate dynamic steps
   cat <<EOF > dynamic-steps.yml
   steps:
+    - label: ":package: Initialize NuGet Cache"
+      key: "init-nuget-cache"
+      command: |
+        mkdir -p .nuget/packages
+      plugins:
+        - docker:
+            image: mcr.microsoft.com/dotnet/sdk:9.0
+        - artifacts:
+            compressed: ".nuget/packages.tgz"
+            upload: ".nuget/packages"
 EOF
 
   jq -c '.[]' affected-projects.json | while read -r project; do
@@ -19,10 +29,33 @@ EOF
     PROJECT_DIR=$(dirname "$FILEPATH")
     
     cat <<EOF >> dynamic-steps.yml
-    - label: ":dotnet: Build $NAME"
+    - label: ":dotnet: Restore $NAME"
+      key: "restore-$SANITIZED_NAME"
+      depends_on: "init-nuget-cache"
       command: |
-        dotnet build --configuration Release "$FILEPATH"
+        dotnet restore "$FILEPATH" --packages ".nuget/packages"
       plugins:
+        - docker:
+            image: mcr.microsoft.com/dotnet/sdk:9.0
+        - artifacts:
+            download: ".nuget/packages"
+            compressed: ".nuget/packages.tgz"
+        - artifacts:
+            compressed: ".nuget/packages.tgz"
+            upload: ".nuget/packages"
+        - artifacts:
+            upload: "**/obj/*"
+    
+    - label: ":dotnet: Build $NAME"
+      depends_on: "restore-$SANITIZED_NAME"
+      command: |
+        dotnet build --configuration Release"$FILEPATH"
+      plugins:
+        - artifacts:
+            download: "**/obj/*"
+        - artifacts:
+            download: ".nuget/packages"
+            compressed: ".nuget/packages.tgz"
         - docker:
             image: mcr.microsoft.com/dotnet/sdk:9.0
         
