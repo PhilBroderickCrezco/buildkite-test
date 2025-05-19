@@ -11,7 +11,7 @@ steps:
 
   - label: "🔍 Test Engine"
     depends_on: "test"
-    command: buildkite-agent artifact download "test-results.trx" .
+    command: buildkite-agent artifact download "**/test-results.trx" .
     plugins:
       - test-collector#v1.11.0:
           files: "test-results.trx"
