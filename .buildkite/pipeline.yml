@@ -2,9 +2,7 @@ steps:
   - label: "Check buildkite-agent"
     key: "test"
     command: |
-      cd ..
-      ls -l /usr/bin/buildkite-agent
-      buildkite-agent meta-data set "successful" "true"
+      /usr/bin/buildkite-agent meta-data set "successful" "true"
     plugins:
       - docker:
           image: ubuntu:latest
