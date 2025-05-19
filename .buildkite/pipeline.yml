@@ -2,6 +2,7 @@ steps:
   - label: "Check buildkite-agent"
     key: "test"
     command: |
+      cd ..
       ls -l /usr/bin/buildkite-agent
       file /usr/bin/buildkite-agent
       ldd /usr/bin/buildkite-agent
