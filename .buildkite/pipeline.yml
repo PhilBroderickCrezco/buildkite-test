@@ -1,15 +1,12 @@
 steps:
   - label: "Check buildkite-agent"
-    key: "test"
     command: |
       buildkite-agent --version
     plugins:
       - docker:
           image: ubuntu:latest
           mount-buildkite-agent: true
-          user: root
-          environment:
-            - "BUILDKITE_AGENT_BINARY_PATH=/usr/bin/buildkite-agent"
+          propagate-uid-gid: true
 
   - label: ":dotnet: Get affected projects"
     depends_on: "test"
