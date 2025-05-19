@@ -9,7 +9,7 @@ steps:
           mount-buildkite-agent: true
           user: root
           environment:
-            - "BUILDKITE_AGENT_BINARY_PATH=/usr/bin/buildkite-agetn"
+            - "BUILDKITE_AGENT_BINARY_PATH=/usr/bin/buildkite-agent"
 
   - label: ":dotnet: Get affected projects"
     depends_on: "test"
