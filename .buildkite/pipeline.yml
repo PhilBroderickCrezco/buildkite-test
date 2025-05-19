@@ -3,15 +3,13 @@ steps:
     key: "test"
     command: |
       cd ..
-      ls -l /usr/bin/buildkite-agent
-      file /usr/bin/buildkite-agent
-      ldd /usr/bin/buildkite-agent
-      /usr/bin/buildkite-agent --version
-      buildkite-agent meta-data set "successful" "true"
+      # Copy the agent from the original container to the Docker step
+      docker cp buildkite-agent:/usr/local/bin/buildkite-agent /tmp/buildkite-agent
+      chmod +x /tmp/buildkite-agent
+      /tmp/buildkite-agent meta-data set "successful" "true"
     plugins:
       - docker:
           image: ubuntu:latest
-          mount-buildkite-agent: true
           user: root
 
   - label: ":dotnet: Get affected projects"
