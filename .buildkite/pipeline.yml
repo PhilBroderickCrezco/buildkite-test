@@ -2,8 +2,7 @@ steps:
   - label: "Check buildkite-agent"
     key: "test"
     command: |
-      chmod +x /usr/bin/buildkite-agent  # Fix the permissions
-      /usr/bin/buildkite-agent meta-data set "successful" "true"
+      buildkite-agent meta-data set "successful" "true"
     plugins:
       - docker:
           image: ubuntu:latest
