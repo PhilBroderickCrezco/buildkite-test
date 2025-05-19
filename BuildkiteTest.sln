@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{F0EF96
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroserviceLib", "Shared\MicroserviceLib\MicroserviceLib.csproj", "{2C29ADC3-6AA0-468A-932C-406B808593C4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroserviceA.Tests", "MicroserviceA\MicroserviceA.Tests\MicroserviceA.Tests.csproj", "{691A2A9B-A361-4EE1-ADFD-CDE8150C5B4D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,10 +32,15 @@ Global
 		{2C29ADC3-6AA0-468A-932C-406B808593C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C29ADC3-6AA0-468A-932C-406B808593C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C29ADC3-6AA0-468A-932C-406B808593C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{691A2A9B-A361-4EE1-ADFD-CDE8150C5B4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{691A2A9B-A361-4EE1-ADFD-CDE8150C5B4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{691A2A9B-A361-4EE1-ADFD-CDE8150C5B4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{691A2A9B-A361-4EE1-ADFD-CDE8150C5B4D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{459BA600-2C98-41ED-B66D-CC733DCA8236} = {36647855-3AA5-42EE-B794-9B4B4EAF9196}
 		{24081B2E-EB35-40C3-8DA1-FCA0BAD779B7} = {59D25FB2-C5F2-4B9F-AC33-984C6BAAAA27}
 		{2C29ADC3-6AA0-468A-932C-406B808593C4} = {F0EF9648-D780-4EFB-803E-0CC0C112D1C9}
+		{691A2A9B-A361-4EE1-ADFD-CDE8150C5B4D} = {36647855-3AA5-42EE-B794-9B4B4EAF9196}
 	EndGlobalSection
 EndGlobal
