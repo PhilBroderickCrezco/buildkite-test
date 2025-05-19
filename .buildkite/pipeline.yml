@@ -14,11 +14,13 @@ steps:
         echo "Affected projects found"
         cat affected-projects.json | jq -r '.[]' > affected-list.txt
         echo "true" > has-affected-projects.txt
+        buildkite-agent meta-data set "has-affected-projects" "true"
       else
         echo "No affected projects found"
         echo "[]" > affected-projects.json
         touch affected-list.txt
         echo "false" > has-affected-projects.txt
+        buildkite-agent meta-data set "has-affected-projects" "false"
       fi
     plugins:
       - docker:
