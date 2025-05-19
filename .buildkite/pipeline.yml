@@ -2,7 +2,10 @@ steps:
   - label: "Check buildkite-agent"
     key: "test"
     command: |
-      chmod 755 /usr/bin/buildkite-agent
+      ls -l /usr/bin/buildkite-agent
+      file /usr/bin/buildkite-agent
+      ldd /usr/bin/buildkite-agent
+      /usr/bin/buildkite-agent --version
       buildkite-agent meta-data set "successful" "true"
     plugins:
       - docker:
