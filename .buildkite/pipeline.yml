@@ -6,6 +6,7 @@ steps:
     plugins:
       - docker:
           image: ubuntu:latest
+          mount-buildkite-agent: true
 
   - label: ":dotnet: Get affected projects"
     depends_on: "test"
