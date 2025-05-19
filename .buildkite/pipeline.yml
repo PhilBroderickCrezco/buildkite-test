@@ -3,6 +3,9 @@ steps:
     key: "test"
     command: |
       buildkite-agent meta-data set "successful" "true"
+    plugins:
+      - docker:
+          image: ubuntu:latest
 
   - label: ":dotnet: Get affected projects"
     depends_on: "test"
