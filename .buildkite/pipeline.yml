@@ -1,5 +1,11 @@
 steps:
+  - label: "Check buildkite-agent"
+    key: "test"
+    command: |
+      buildkite-agent meta-data set "successful" "true"
+
   - label: ":dotnet: Get affected projects"
+    depends_on: "test"
     key: "affected"
     command: |
       # Install jq for JSON parsing
