@@ -2,12 +2,14 @@ steps:
   - label: "Check buildkite-agent"
     key: "test"
     command: |
-      echo $BUILDKITE_AGENT_JOB_API_SOCKET
+      buildkite-agent --version
     plugins:
       - docker:
           image: ubuntu:latest
           mount-buildkite-agent: true
           user: root
+          environment:
+            - "BUILDKITE_AGENT_BINARY_PATH=/usr/bin/buildkite-agetn"
 
   - label: ":dotnet: Get affected projects"
     depends_on: "test"
