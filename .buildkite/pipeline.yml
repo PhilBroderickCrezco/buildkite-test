@@ -9,8 +9,6 @@ steps:
           image: ubuntu:latest
           mount-buildkite-agent: true
           user: root
-          volumes:
-            - /usr/local/bin/buildkite-agent:/usr/bin/buildkite-agent:rw
 
   - label: ":dotnet: Get affected projects"
     depends_on: "test"
