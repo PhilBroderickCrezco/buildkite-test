@@ -22,14 +22,13 @@ EOF
     - label: ":dotnet: Restore $NAME"
       key: "restore-$SANITIZED_NAME"
       command: |
-        dotnet restore "$FILEPATH" --packages ".nuget/${NAME}/packages"
-        ls -a $PROJECT_DIR
+        dotnet restore "$FILEPATH" --packages ".nuget/packages"
       plugins:
         - docker:
             image: mcr.microsoft.com/dotnet/sdk:9.0
         - artifacts:
-            compressed: ".nuget/${NAME}/packages.tgz"
-            upload: ".nuget/${NAME}/packages"
+            compressed: ".nuget/packages.tgz"
+            upload: ".nuget/packages"
         - artifacts:
             upload: "**/obj/*"
     
@@ -39,10 +38,12 @@ EOF
         dotnet build --configuration Release --no-restore "$FILEPATH"
       plugins:
         - artifacts:
+            step: "restore-$SANITIZED_NAME"
             download: "**/obj/*"
         - artifacts:
-            download: ".nuget/${NAME}/packages"
-            compressed: ".nuget/${NAME}/packages.tgz"
+            step: "restore-$SANITIZED_NAME"
+            download: ".nuget/packages"
+            compressed: ".nuget/packages.tgz"
         - docker:
             image: mcr.microsoft.com/dotnet/sdk:9.0
         
