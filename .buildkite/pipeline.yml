@@ -2,14 +2,11 @@ steps:
   - label: "Check buildkite-agent"
     key: "test"
     command: |
-      cd ..
-      # Copy the agent from the original container to the Docker step
-      docker cp buildkite-agent:/usr/local/bin/buildkite-agent /tmp/buildkite-agent
-      chmod +x /tmp/buildkite-agent
-      /tmp/buildkite-agent meta-data set "successful" "true"
+      echo $BUILDKITE_AGENT_JOB_API_SOCKET
     plugins:
       - docker:
           image: ubuntu:latest
+          mount-buildkite-agent: true
           user: root
 
   - label: ":dotnet: Get affected projects"
