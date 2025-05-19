@@ -7,7 +7,7 @@ steps:
           image: mcr.microsoft.com/dotnet/sdk:9.0
       - artifacts:
           upload:
-            - test-results.trx
+            - "**/test-results.trx"
 
   - label: "🔍 Test Engine"
     depends_on: "test"
@@ -19,6 +19,7 @@ steps:
   
   - label: ":dotnet: Get affected projects"
     key: "affected"
+    depends_on: "test"
     command: |
       # Install jq for JSON parsing
       apt-get update && apt-get install -y jq
