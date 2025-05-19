@@ -3,7 +3,7 @@ steps:
     key: "test"
     command: |
       cd ../usr/bin/
-      ls -a
+      ls -l /usr/bin/buildkite-agent
       buildkite-agent meta-data set "successful" "true"
     plugins:
       - docker:
