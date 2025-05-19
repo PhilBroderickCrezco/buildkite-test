@@ -2,7 +2,7 @@ steps:
   - label: "Check buildkite-agent"
     key: "test"
     command: |
-      cd ../usr/bin/
+      cd ..
       ls -l /usr/bin/buildkite-agent
       buildkite-agent meta-data set "successful" "true"
     plugins:
