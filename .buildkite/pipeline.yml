@@ -8,9 +8,9 @@ steps:
     plugins:
       - docker:
           image: mcr.microsoft.com/dotnet/sdk:9.0
-      - artifacts:
-          upload:
-            - "**/test-results.xml"
+      - test-collector#v1.11.0:
+          files: "**/test-results.xml"
+          format: "junit"
 
   - label: "🔍 Test Engine"
     depends_on: "test"
