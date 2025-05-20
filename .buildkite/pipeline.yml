@@ -1,10 +1,23 @@
+env:
+  BUILDKITE_ANALYTICS_TOKEN: FA2gLUrPcFzZfgUyEoQnvRAX
+
 steps:
   - label: ":dotnet: :testexecute: Test"
     key: "test"
     command: dotnet test MicroserviceA/MicroserviceA.Tests/MicroserviceA.Tests.csproj --logger "trx;LogFileName=test-results.trx"
     plugins:
+      - docker:
+          image: mcr.microsoft.com/dotnet/sdk:9.0
+      - artifacts:
+          upload:
+            - "**/test-results.trx"
+
+  - label: "🔍 Test Engine"
+    depends_on: "test"
+    command: buildkite-agent artifact download "**/test-results.trx" .
+    plugins:
       - test-collector#v1.11.0:
-          files: "**/test-results.trx"
+          files: "test-results.trx"
           format: "trx"
   
   - label: ":dotnet: Get affected projects"
