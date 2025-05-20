@@ -17,7 +17,7 @@ steps:
     command: buildkite-agent artifact download "**/test-results.trx" .
     plugins:
       - test-collector#v1.11.0:
-          files: "test-results.trx"
+          files: "**/test-results.trx"
           format: "trx"
   
   - label: ":dotnet: Get affected projects"
