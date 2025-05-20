@@ -11,14 +11,6 @@ steps:
       - test-collector#v1.11.0:
           files: "**/test-results.xml"
           format: "junit"
-
-  - label: "🔍 Test Engine"
-    depends_on: "test"
-    command: buildkite-agent artifact download "**/test-results.xml" .
-    plugins:
-      - test-collector#v1.11.0:
-          files: "**/test-results.xml"
-          format: "junit"
   
   - label: ":dotnet: Get affected projects"
     key: "affected"
