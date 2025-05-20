@@ -4,7 +4,7 @@ env:
 steps:
   - label: ":dotnet: :testexecute: Test"
     key: "test"
-    command: dotnet test MicroserviceA/MicroserviceA.Tests/MicroserviceA.Tests.csproj --logger "junit;LogFileName=test-results.xml"
+    command: dotnet test MicroserviceA/MicroserviceA.Tests/MicroserviceA.Tests.csproj --logger "xunit;LogFileName=test-results.xml"
     plugins:
       - docker:
           image: mcr.microsoft.com/dotnet/sdk:9.0
@@ -18,7 +18,7 @@ steps:
     plugins:
       - test-collector#v1.11.0:
           files: "**/test-results.xml"
-          format: "junit"
+          format: "xunit"
   
   - label: ":dotnet: Get affected projects"
     key: "affected"
